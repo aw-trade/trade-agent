@@ -8,13 +8,13 @@ from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseMessage, HumanMessage, AIMessage
 
-from trading_tools import generate_rust_crypto_algo
+from trading_tools import generate_rust_crypto_algo, build_docker_image_only
 from rag_tools import search_knowledge_base, add_to_knowledge_base
 
 load_dotenv()
 
 class FinanceAgent:
-    """LangChain-based Finance Agent with RAG and code generation capabilities."""
+    """LangChain-based Finance Agent with RAG, code generation, and Docker capabilities."""
     
     def __init__(self):
         api_key = os.getenv("GOOGLE_API_KEY")
@@ -30,36 +30,52 @@ class FinanceAgent:
         
         self.tools = [
             generate_rust_crypto_algo,
+            build_docker_image_only,
             search_knowledge_base,
             add_to_knowledge_base,
         ]
         
         self.prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are a finance and crypto trading expert AI assistant with access to both a knowledge base and code generation capabilities.
+            ("system", """You are a finance and crypto trading expert AI assistant with access to code generation, Docker containerization, and knowledge base capabilities.
 
 You have access to these tools:
 
-1. **Code Generation**: Use generate_rust_crypto_algo when users ask to:
+1. **Code Generation & Docker**: Use generate_rust_crypto_algo when users ask to:
    - Generate a crypto algorithm
    - Create a trading strategy  
    - Build a crypto trading bot
    - Make a trading algorithm
    - Develop a crypto strategy
+   - Create and containerize algorithms
+   
+   This tool can optionally build Docker images. Ask if they want Docker containerization.
 
-2. **Knowledge Base Search**: Use search_knowledge_base when users ask about:
+2. **Docker Build Only**: Use build_docker_image_only when users want to:
+   - Build Docker image for existing project
+   - Containerize existing Rust code
+   - Create Docker container from project path
+
+3. **Knowledge Base Search**: Use search_knowledge_base when users ask about:
    - Existing trading strategies
    - Financial concepts or definitions
    - Algorithm explanations
    - Market analysis techniques
+   - Docker best practices for trading apps
 
-3. **Knowledge Base Management**: Use add_to_knowledge_base to store new information
+4. **Knowledge Base Management**: Use add_to_knowledge_base to store new information
 
-You can use multiple tools in a single conversation. For example:
-- First search the knowledge base for relevant strategies
-- Then generate code based on that information
-- Or add new insights to the knowledge base after generating code
+## Docker Integration Features:
+- **Meaningful Names**: Images get names based on strategy (e.g., "rsi-momentum-algo", "grid-trading-algo")
+- **Multi-stage Builds**: Optimized images using Rust musl for minimal size
+- **Security**: Non-root user, health checks, proper labels
+- **Development**: Ready-to-use commands for building and running
 
-Always be helpful with general finance questions and use the appropriate tools based on the user's needs."""),
+You can combine tools effectively:
+- Search for strategy patterns, then generate code with Docker
+- Generate algorithms and automatically containerize them
+- Build Docker images for existing projects with custom names
+
+Always ask if users want Docker containerization when generating new algorithms. Provide meaningful Docker commands and examples."""),
             ("placeholder", "{chat_history}"),
             ("human", "{input}"),
             ("placeholder", "{agent_scratchpad}")
@@ -98,6 +114,11 @@ Always be helpful with general finance questions and use the appropriate tools b
     def process_message(self, user_input: str) -> str:
         """Process a user message and return the agent's response."""
         try:
+            # Check if the user is asking about Docker-related functionality
+            docker_keywords = ['docker', 'container', 'containerize', 'image', 'build docker']
+            if any(keyword in user_input.lower() for keyword in docker_keywords):
+                print("[INFO] Detected Docker-related request")
+            
             response = self.agent_executor.invoke({
                 "input": user_input,
                 "chat_history": self.chat_history

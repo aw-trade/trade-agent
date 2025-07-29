@@ -1,0 +1,42 @@
+# Git
+.git/
+.gitignore
+
+# Rust
+target/
+Cargo.lock
+
+# Development
+.env
+.env.local
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (keep README.md)
+*.md
+!README.md
+
+# Docker
+Dockerfile.dev
+docker-compose.override.yml
+
+# Testing
+tests/
+benches/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build artifacts
+dist/
+build/

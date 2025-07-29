@@ -156,7 +156,7 @@ impl {strategy_class_name} {{
             data.timestamp,
         );
         
-        println!("📊 {{}}: ${{{{:.4}}}} | Vol: {{{{:.2}}}} | Bid: ${{{{:.4}}}} | Ask: ${{{{:.4}}}}", 
+        println!("📊 {{}}: ${{:.4}} | Vol: {{:.2}} | Bid: ${{:.4}} | Ask: ${{:.4}}", 
                  data.symbol, data.price, data.volume, data.bid, data.ask);
         
         let history = self.metrics_history

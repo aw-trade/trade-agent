@@ -15,11 +15,6 @@ class CLI:
         print("  • Generate Rust crypto trading algorithms")
         print("  • Add new information to the knowledge base")
         print("  • General finance and crypto questions")
-        print("\n💡 Try these commands:")
-        print("  • 'search for momentum trading strategies'")
-        print("  • 'generate a crypto algorithm for scalping'")
-        print("  • 'what is RSI and how is it used in trading?'")
-        print("  • 'create a trading strategy using moving averages'")
 
         while True:
             try:
