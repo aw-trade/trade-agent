@@ -1,0 +1,30 @@
+# Core LangChain dependencies (compatible with your existing packages)
+langchain>=0.3.26
+langchain-core>=0.3.68
+langchain-google-genai>=2.0.0
+
+# Google AI integration
+google-generativeai>=0.8.0
+
+# ChromaDB for vector storage
+chromadb>=0.5.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Optional: For better performance and additional features
+# Uncomment if you want enhanced capabilities
+
+# Better JSON handling
+# orjson==3.10.3
+
+# Enhanced text processing
+# tiktoken==0.6.0
+
+# Performance monitoring (optional)
+# psutil==5.9.8
+
+# Development dependencies (optional)
+# pytest==8.2.1
+# black==24.4.2
+# flake8==7.0.0
