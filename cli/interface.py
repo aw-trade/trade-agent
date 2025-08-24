@@ -31,6 +31,8 @@ class CLI:
   • 'clear' - Clear chat history
   • 'stats' - Show system statistics
   • 'health' - System health check
+  • 'routing' - Show routing system status
+  • 'routing toggle' - Enable/disable intelligent routing
   • 'help' - Show this help message
 ''')
         
@@ -58,6 +60,12 @@ class CLI:
                     continue
                 elif user_input.lower() == 'help':
                     self._show_help()
+                    continue
+                elif user_input.lower() == 'routing':
+                    self._show_routing_info()
+                    continue
+                elif user_input.lower().startswith('routing '):
+                    self._handle_routing_command(user_input[8:].strip())
                     continue
                 elif not user_input:
                     print("Please enter a message or command.")
@@ -116,6 +124,7 @@ class CLI:
         print(f"  • Chat History: {agent_stats['chat_history_length']}/{agent_stats['max_chat_history']} messages")
         print(f"  • Available Tools: {agent_stats['available_tools']}")
         print(f"  • Tool Names: {', '.join(agent_stats['tool_names'])}")
+        print(f"  • Intelligent Routing: {'✅ Enabled' if agent_stats.get('routing_enabled', False) else '❌ Disabled'}")
         
         # RAG statistics
         if rag_service:
@@ -255,14 +264,76 @@ class CLI:
   • "Show project details for [project-name]"
   • "Create a new algorithm with custom parameters"
 
+📊 Technical Analysis:
+  • "Analyze MFI for AAPL"
+  • "Is TSLA overbought or oversold?"
+  • "Screen AAPL,MSFT,GOOGL for buy signals"
+  • "Technical analysis of Bitcoin"
+
 💡 Tips:
   • Be specific about your trading strategy requirements
   • Mention if you want Docker containerization
   • Ask about existing patterns before creating new ones
-  • The AI can explain trading concepts and strategies
+  • The AI uses intelligent routing to optimize responses
+  • Technical analysis works with stocks and crypto symbols
 
 🔗 Example Workflows:
   1. Search knowledge base → Generate algorithm → Build Docker image
-  2. Create strategy → Add to knowledge base → Share configuration
+  2. Technical analysis → Create strategy → Add to knowledge base
   3. Research existing patterns → Customize parameters → Deploy
+  4. Screen symbols → Generate targeted algorithms → Containerize
+
+🧠 Intelligent Routing:
+  • The agent automatically detects query types and routes optimally
+  • Use 'routing' command to see current status
+  • Use 'routing toggle' to enable/disable smart routing
 ''')
+    
+    def _show_routing_info(self):
+        """Show routing system information."""
+        print("\n🧠 Intelligent Routing System Status:\n")
+        
+        agent_stats = self.agent.get_agent_stats()
+        routing_enabled = agent_stats.get('routing_enabled', False)
+        
+        print(f"🔀 Status: {'✅ Enabled' if routing_enabled else '❌ Disabled'}")
+        
+        if routing_enabled:
+            print("\n📋 Available Routes:")
+            print("  • algorithm_generation - Code generation and Docker operations")
+            print("  • technical_analysis - MFI analysis and stock/crypto signals")
+            print("  • rag_search - Knowledge base and strategy searches")  
+            print("  • mixed_analysis - Combined technical + algorithm/search requests")
+            print("  • general_agent - General trading questions and explanations")
+            
+            print("\n🎯 How Routing Works:")
+            print("  • Queries are automatically classified using AI")
+            print("  • Each route uses optimized tools and context")
+            print("  • Technical analysis gets real-time market data")
+            print("  • Algorithm requests get specialized code generation")
+            print("  • Mixed requests combine multiple capabilities")
+            
+            print("\n💡 Benefits:")
+            print("  • Faster, more focused responses")
+            print("  • Automatic symbol extraction and analysis")
+            print("  • Context-aware tool selection")
+            print("  • Optimized for different query types")
+        else:
+            print("\n⚠️  Routing is disabled - using fallback mode")
+            print("  • All queries processed with standard agent")
+            print("  • Use 'routing toggle' to enable intelligent routing")
+    
+    def _handle_routing_command(self, command: str):
+        """Handle routing-related commands."""
+        if command.lower() == 'toggle':
+            current_status = self.agent.toggle_routing()
+            status_text = "enabled" if current_status else "disabled"
+            print(f"✅ Intelligent routing {status_text}")
+        elif command.lower() == 'enable':
+            self.agent.toggle_routing(True)
+            print("✅ Intelligent routing enabled")
+        elif command.lower() == 'disable':
+            self.agent.toggle_routing(False)
+            print("❌ Intelligent routing disabled")
+        else:
+            print("❌ Unknown routing command. Available: toggle, enable, disable")

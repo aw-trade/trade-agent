@@ -1,14 +1,24 @@
-# Trade Agent
+# Trade Agent v2.0
 
-An AI-powered tool for generating Rust cryptocurrency trading algorithms with RAG (Retrieval-Augmented Generation) capabilities and Docker containerization support. Part of the AW-Trade algorithmic trading system.
+An advanced AI-powered trading assistant with unified capabilities for algorithm generation, technical analysis, knowledge base management, and Docker containerization. Features intelligent query routing and real-time market analysis integration.
 
-## Features
+## 🚀 New Features in v2.0
+
+- **🧠 Intelligent Query Routing**: LangGraph-based system that automatically detects query types and routes to specialized handlers
+- **📊 Technical Analysis Integration**: Real-time MFI (Money Flow Index) analysis with buy/sell signals for stocks and crypto
+- **🔗 Unified Agent Architecture**: Single agent handling all capabilities with optimized routing
+- **📈 Symbol Extraction & Analysis**: Automatic detection and analysis of stock/crypto symbols in queries
+- **⚡ Enhanced Performance**: Context-aware responses with specialized tool selection
+
+## Core Features
 
 - **AI-Powered Algorithm Generation**: Generate complete Rust cryptocurrency trading algorithms from natural language descriptions
+- **Technical Analysis**: Real-time MFI analysis, overbought/oversold detection, and trading signals
 - **RAG Knowledge Base**: Search and expand a knowledge base of trading strategies and concepts using ChromaDB
 - **Docker Integration**: Automatically containerize generated algorithms for easy deployment
-- **Interactive CLI**: Terminal-based chat interface for seamless interaction
+- **Interactive CLI**: Enhanced terminal interface with routing controls and technical analysis commands
 - **Template System**: Flexible templating engine with intelligent default value generation
+- **Multi-Symbol Screening**: Screen multiple stocks/crypto for trading opportunities
 - **Integration Ready**: Designed to work with the broader AW-Trade microservices ecosystem
 
 ## Prerequisites
@@ -17,6 +27,7 @@ An AI-powered tool for generating Rust cryptocurrency trading algorithms with RA
 - Google AI API key (Gemini)
 - Rust (for local algorithm development)
 - Docker (for containerization)
+- **Technical Indicators Finder Service** (for real-time market analysis)
 
 ## Installation
 
@@ -37,6 +48,14 @@ An AI-powered tool for generating Rust cryptocurrency trading algorithms with RA
    GOOGLE_API_KEY=your_google_ai_api_key_here
    ```
 
+4. **Start Technical Indicators Service** (for technical analysis features):
+   ```bash
+   # In a separate terminal
+   cd ../technical-indicators-finder
+   python main.py
+   ```
+   This service runs on port 8000 and provides real-time MFI analysis.
+
 ## Usage
 
 ### Start the Interactive CLI
@@ -45,41 +64,104 @@ An AI-powered tool for generating Rust cryptocurrency trading algorithms with RA
 python main.py
 ```
 
-The CLI provides an interactive chat interface where you can:
+The CLI provides an intelligent chat interface with advanced routing capabilities:
 
+**🤖 Algorithm Generation:**
 - Generate crypto trading algorithms
+- Create Docker containers automatically
+- Build complete project structures
+
+**📊 Technical Analysis:**
+- Real-time MFI analysis for stocks and crypto
+- Overbought/oversold detection
+- Multi-symbol screening for trading opportunities
+
+**📚 Knowledge Management:**
 - Search the knowledge base for trading strategies
 - Add new information to the knowledge base
-- Ask general finance and crypto questions
+- Cross-reference patterns and examples
+
+**🧠 Intelligent Routing:**
+- Automatic query classification and routing
+- Optimized responses based on query type
+- Context-aware tool selection
 
 ### Example Interactions
 
 ```bash
-You: Generate a RSI momentum trading algorithm for Bitcoin
+# Algorithm Generation
+You: Generate a RSI momentum trading algorithm for Bitcoin with Docker
 
+# Technical Analysis
+You: Analyze MFI for AAPL - is it overbought?
+You: Screen TSLA,MSFT,GOOGL for buy signals
+You: What's the current technical analysis for Bitcoin?
+
+# Knowledge Base
 You: Search for information about order book imbalance strategies
-
 You: Add information about Bollinger Bands to the knowledge base
 
-You: Create a mean reversion strategy with 20-period moving average
+# Mixed Queries (automatically routed)
+You: Create a mean reversion strategy based on AAPL's MFI signals
+You: Find examples of RSI strategies and generate one for Ethereum
 ```
 
 ### CLI Commands
 
-- `exit` - Quit the application
+**Basic Commands:**
+- `exit` / `quit` - Exit the application
 - `history` - Display chat history
-- Regular messages - Process queries through the AI agent
+- `clear` - Clear chat history
+- `stats` - Show system statistics
+- `health` - System health check
+- `help` - Show comprehensive help
+
+**Routing Commands (New in v2.0):**
+- `routing` - Show routing system status
+- `routing toggle` - Enable/disable intelligent routing
+- `routing enable` - Enable intelligent routing
+- `routing disable` - Disable intelligent routing
 
 ## Architecture
 
-### Core Components
+### Core Components (v2.0)
 
-- **`finance_agent.py`** - Main LangChain-based AI agent with tool integration
-- **`cli.py`** - Terminal-based chat interface
-- **`trading_tools.py`** - Rust algorithm generation and Docker build tools
-- **`rag_tools.py`** - ChromaDB integration for knowledge base operations
-- **`project_generator.py`** - Template management and project generation
+**Agent System:**
+- **`agents/finance_agent.py`** - Unified agent with intelligent routing (LangGraph + LangChain)
+- **`cli/interface.py`** - Enhanced terminal interface with routing controls
+
+**Tools & Services:**
+- **`tools/trading_tools.py`** - Rust algorithm generation and Docker build tools
+- **`tools/rag_tools.py`** - ChromaDB integration for knowledge base operations
+- **`tools/technical_indicators_tool.py`** - MFI analysis and trading signals
+- **`tools/technical_indicators_client.py`** - REST client for indicators service
+
+**Configuration & Templates:**
+- **`config/settings.py`** - Centralized configuration management
+- **`templates/`** - Template system for algorithm generation
 - **`rust_template.rs`** - Base Rust template for generated algorithms
+
+**Services Integration:**
+- **`services/docker_service.py`** - Docker operations and container management
+- **`services/rag_service.py`** - Vector database operations
+- **`services/project_service.py`** - Project lifecycle management
+
+### Intelligent Routing System
+
+The v2.0 agent uses LangGraph to implement intelligent query routing:
+
+```
+User Query → Preparation → Classification → Specialized Handler → Response
+              ↓              ↓                ↓
+        Symbol Extraction  Route Detection   Optimized Tools
+```
+
+**Route Types:**
+- **`algorithm_generation`** - Code generation, Docker operations
+- **`technical_analysis`** - MFI analysis, trading signals
+- **`rag_search`** - Knowledge base searches
+- **`mixed_analysis`** - Combined technical + algorithm/search
+- **`general_agent`** - General trading questions
 
 ### Integration with AW-Trade
 

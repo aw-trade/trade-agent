@@ -3,6 +3,9 @@ langchain>=0.3.26
 langchain-core>=0.3.68
 langchain-google-genai>=2.0.0
 
+# LangGraph for advanced agent routing and workflow management
+langgraph>=0.2.0
+
 # Google AI integration
 google-generativeai>=0.8.0
 
@@ -28,6 +31,12 @@ pydantic>=2.5.0
 
 # Performance monitoring (optional)
 # psutil==5.9.8
+
+# Technical Indicators dependencies
+yfinance>=0.2.18
+pandas>=1.5.0
+numpy>=1.21.0
+requests>=2.28.0
 
 # Development dependencies (optional)
 # pytest==8.2.1
